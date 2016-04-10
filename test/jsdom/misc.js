@@ -936,7 +936,7 @@ describe("jsdom/miscellaneous", () => {
     specify("env_with_compression", { async: true }, t => {
       const server = http.createServer((req, res) => {
         switch (req.url) {
-          case "/":
+          case "/": {
             const text = "window.attachedHere = 123";
             const buf = new Buffer(text, "utf-8");
             zlib.gzip(buf, (_, result) => {
@@ -945,6 +945,7 @@ describe("jsdom/miscellaneous", () => {
               res.end(result);
             });
             break;
+          }
         }
       });
 
@@ -1222,17 +1223,19 @@ describe("jsdom/miscellaneous", () => {
 
       const server = http.createServer((req, res) => {
         switch (req.url) {
-          case "/":
+          case "/": {
             res.writeHead(200, { "Content-Length": html.length });
             res.end(html);
             break;
-          case "/foo.js":
+          }
+          case "/foo.js": {
             const cookie = req.headers.cookie;
             const name = cookie ? cookie.split("=")[1] : "no cookie";
             const text = "document.body.innerHTML = 'Hello " + name + "'; window.doCheck();";
             res.writeHead(200, { "Content-Length": text.length });
             res.end(text);
             break;
+          }
         }
       });
 
@@ -1269,17 +1272,19 @@ describe("jsdom/miscellaneous", () => {
 
       const server = http.createServer((req, res) => {
         switch (req.url) {
-          case "/":
+          case "/": {
             res.writeHead(200, { "Content-Length": html.length });
             res.end(html);
             break;
-          case "/foo.txt":
+          }
+          case "/foo.txt": {
             const cookie = req.headers.cookie;
             const name = cookie ? cookie.split("=")[1] : "no cookie";
             const text = "Hello " + name;
             res.writeHead(200, { "Content-Length": text.length });
             res.end(text);
             break;
+          }
         }
       });
 
